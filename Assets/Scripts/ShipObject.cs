@@ -8,6 +8,11 @@ public class ShipObject : MonoBehaviour
     [SerializeField] private float shipMovementSpeed = 10;
     [SerializeField] private float shipTurningSpeed = 10;
     [SerializeField] private float cameraTurningSpeed = 10;
+    private Camera mainCamera;
+
+    void Start(){
+        mainCamera = Camera.main;
+    }
 
     private void Move(float amount){
         transform.Translate(physicalShip.GetShipCourse() * Time.deltaTime * shipMovementSpeed * amount);
@@ -15,6 +20,8 @@ public class ShipObject : MonoBehaviour
 
     void Update(){
         shipCamera.TurnCameraToMouse(cameraTurningSpeed);
+        mainCamera.transform.position = shipCamera.transform.position;
+        mainCamera.transform.rotation = shipCamera.transform.rotation;        
         physicalShip.TurnTo(shipCamera.transform.rotation, shipTurningSpeed);
         Move(CustomControls.GetThrustValue() + 0.2f);
     }
